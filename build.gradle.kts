@@ -24,6 +24,9 @@ tasks.test {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "17"
+
+    val compileJava by tasks.compileJava
+    destinationDirectory.set(compileJava.destinationDirectory)
 }
 
 
