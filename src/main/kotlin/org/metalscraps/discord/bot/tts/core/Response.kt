@@ -1,4 +1,4 @@
-package org.metalscraps.discord.bot.tts
+package org.metalscraps.discord.bot.tts.core
 
 data class Response private constructor(
     val error: Boolean = true,

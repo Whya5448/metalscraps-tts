@@ -1,4 +1,4 @@
-package org.metalscraps.discord.bot.tts
+package org.metalscraps.discord.bot.tts.core
 
 class DefaultTTSService {
     private val providers: MutableMap<String, TTSProvider> = mutableMapOf()

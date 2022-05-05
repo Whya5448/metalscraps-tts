@@ -1,4 +1,4 @@
-package org.metalscraps.discord.bot.tts
+package org.metalscraps.discord.bot.tts.core
 
 enum class AudioFormat {
     NONE,
