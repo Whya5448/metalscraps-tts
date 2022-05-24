@@ -1,5 +1,5 @@
 module metalscraps.tts.core {
     requires kotlin.stdlib;
 
-    exports org.metalscraps.discord.bot.tts.core;
+    exports org.metalscraps.discord.tts.core;
 }
