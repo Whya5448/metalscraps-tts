@@ -1,4 +1,4 @@
-package org.metalscraps.discord.bot.tts.core
+package org.metalscraps.discord.tts.core
 
 interface TTSProvider {
     fun synthesize(text: String): Response {

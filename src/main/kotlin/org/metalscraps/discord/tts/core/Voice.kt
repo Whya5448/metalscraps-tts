@@ -1,4 +1,4 @@
-package org.metalscraps.discord.bot.tts.core
+package org.metalscraps.discord.tts.core
 
 interface Voice {
     fun getId(): String

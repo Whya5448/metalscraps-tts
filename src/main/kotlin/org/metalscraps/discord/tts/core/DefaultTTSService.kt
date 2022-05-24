@@ -1,4 +1,4 @@
-package org.metalscraps.discord.bot.tts.core
+package org.metalscraps.discord.tts.core
 
 class DefaultTTSService {
     private val providers: MutableMap<String, TTSProvider> = mutableMapOf()
@@ -7,7 +7,7 @@ class DefaultTTSService {
         if (providers.isEmpty()) return Response.error("No provider supplies.")
 
         val (id, provider) = providers.entries.random()
-        return synthesize(id, provider.getVoices().random().getId(), text);
+        return synthesize(id, provider.getVoices().random().getId(), text)
     }
 
     fun synthesize(provider: String, voice: String, text: String): Response {
