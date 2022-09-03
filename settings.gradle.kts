@@ -1,1 +1,3 @@
-rootProject.name = "tts-core"
+rootProject.name = "metalscraps-tts"
+
+include("tts-core")
