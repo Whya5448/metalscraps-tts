@@ -1,7 +1,7 @@
-package org.metalscraps.discord.tts.core
+package dev.whya.tts.core
 
 data class Response private constructor(
-    val error: Boolean = true,
+    val error: Boolean = false,
     val errorMessage: String = "",
     val format: AudioFormat = AudioFormat.NONE,
     val bytes: ByteArray = byteArrayOf()
@@ -12,7 +12,7 @@ data class Response private constructor(
         }
 
         fun data(format: AudioFormat, bytes: ByteArray): Response {
-            return Response(error = false, format = format, bytes = bytes)
+            return Response(format = format, bytes = bytes)
         }
     }
 

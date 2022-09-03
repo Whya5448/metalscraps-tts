@@ -1,7 +1,9 @@
-package org.metalscraps.discord.tts.core
+package dev.whya.tts.core
 
 enum class AudioFormat {
     NONE,
+    UNKNOWN,
+    EMPTY,
     MP3,
     OGG
 }
