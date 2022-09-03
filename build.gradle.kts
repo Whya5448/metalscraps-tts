@@ -57,7 +57,7 @@ subprojects {
         repositories {
             maven {
                 name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/whya5448/tts-core")
+                url = uri("https://maven.pkg.github.com/whya5448/metalscraps-tts")
                 credentials {
                     username = "${project.properties["GITHUB_USERNAME"] ?: System.getenv("GITHUB_USERNAME")}"
                     password = "${project.properties["GITHUB_TOKEN"] ?: System.getenv("GITHUB_TOKEN")}"
