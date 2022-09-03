@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.io.ByteArrayOutputStream
 
 plugins {
     java
@@ -24,14 +25,14 @@ subprojects {
     group = "dev.whya.tts"
     version = "0.0.2-SNAPSHOT"
 
-    tasks.withType<KotlinCompile> {
-        kotlinOptions {
-            freeCompilerArgs = listOf("-Xjsr305=strict")
-            jvmTarget = "17"
-        }
-    }
-
     tasks {
+        withType<KotlinCompile> {
+            kotlinOptions {
+                freeCompilerArgs = listOf("-Xjsr305=strict")
+                jvmTarget = "17"
+            }
+        }
+
         val sourcesJar by creating(Jar::class) {
             archiveClassifier.set("sources")
             from(sourceSets.main.get().allSource)
@@ -41,6 +42,15 @@ subprojects {
             archives(sourcesJar)
             archives(jar)
         }
+    }
+
+    fun getGitHash(): String {
+        val stdout = ByteArrayOutputStream()
+        exec {
+            commandLine("git", "rev-parse", "--short", "HEAD")
+            standardOutput = stdout
+        }
+        return stdout.toString().trim()
     }
 
     publishing {
@@ -57,6 +67,11 @@ subprojects {
 
         publications {
             create<MavenPublication>("library") {
+                from(components["java"])
+            }
+
+            create<MavenPublication>("snapshot") {
+                version = getGitHash()
                 from(components["java"])
             }
         }
