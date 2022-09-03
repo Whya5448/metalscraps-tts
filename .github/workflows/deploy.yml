@@ -27,3 +27,6 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           arguments: publishSnapshotPublicationToGitHubPackagesRepository
+        env:
+          GITHUB_USERNAME: ${{ secrets.GH_USERNAME }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
