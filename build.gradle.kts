@@ -6,42 +6,60 @@ plugins {
     `java-library`
     `maven-publish`
     kotlin("jvm") version "1.7.10" apply false
+
+    id("org.javamodularity.moduleplugin") version "1.8.12" apply false
 }
 
 allprojects {
+    group = "dev.whya.tts"
+    version = "0.0.2-SNAPSHOT"
+
     repositories {
+        mavenLocal()
         mavenCentral()
     }
 }
 
 subprojects {
     apply {
-        plugin("org.gradle.java")
+        apply(plugin = "java")
         plugin("org.gradle.java-library")
         plugin("org.gradle.maven-publish")
         plugin("org.jetbrains.kotlin.jvm")
     }
 
-    group = "dev.whya.tts"
-    version = "0.0.2-SNAPSHOT"
+    tasks.withType<KotlinCompile> {
+        kotlinOptions {
+            freeCompilerArgs = listOf("-Xjsr305=strict")
+            jvmTarget = "17"
+        }
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
+
+    tasks.withType<Jar> {
+        archiveClassifier.set("")
+    }
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+        withSourcesJar()
+    }
 
     tasks {
-        withType<KotlinCompile> {
-            kotlinOptions {
-                freeCompilerArgs = listOf("-Xjsr305=strict")
-                jvmTarget = "17"
-            }
-        }
-
-        val sourcesJar by creating(Jar::class) {
+/*        val sourcesJar by creating(Jar::class) {
             archiveClassifier.set("sources")
             from(sourceSets.main.get().allSource)
         }
-
+*/
+/*
         artifacts {
             archives(sourcesJar)
             archives(jar)
         }
+        */
     }
 
     fun getGitHash(): String {
