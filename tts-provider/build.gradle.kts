@@ -29,7 +29,7 @@ dependencies {
 
     // jaxb
     implementation("javax.xml.bind:jaxb-api:2.4.0-b180830.0359")
-    implementation("org.glassfish.jaxb:jaxb-runtime:2.4.0-b180830.0438")
+    implementation("org.glassfish.jaxb:jaxb-runtime:4.0.0")
 
     // logging
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
