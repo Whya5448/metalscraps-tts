@@ -9,7 +9,7 @@ plugins {
 
 val feignVersion = "11.9.1"
 val slf4jVersion = "1.7.36"
-val log4jVersion = "2.18.0"
+val log4jVersion = "2.19.0"
 val jacksonVersion = "2.13.3"
 val jacksonModuleKotlinVersion = "2.13.3"
 
