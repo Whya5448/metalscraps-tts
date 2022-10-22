@@ -13,7 +13,7 @@ plugins {
 extra["springCloudVersion"] = "2021.0.4"
 
 group = "dev.whya"
-version = "0.0.1"
+version = "0.0.2"
 
 repositories {
     mavenCentral()
