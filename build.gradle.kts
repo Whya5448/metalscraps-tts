@@ -1,97 +1,105 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import java.io.ByteArrayOutputStream
-
 plugins {
-    java
     `java-library`
     `maven-publish`
-    kotlin("jvm") version "1.7.10" apply false
 
-    id("org.javamodularity.moduleplugin") version "1.8.12" apply false
+    kotlin("jvm") version "1.7.20"
+    kotlin("plugin.spring") version "1.7.20"
+    kotlin("plugin.jpa") version "1.7.20"
+
+    id("org.springframework.boot") version "2.7.5"
+    id("io.spring.dependency-management") version "1.0.15.RELEASE"
 }
 
-allprojects {
-    group = "dev.whya.tts"
-    version = "0.0.2-SNAPSHOT"
+extra["springCloudVersion"] = "2021.0.4"
 
+group = "dev.whya"
+version = "0.0.1"
+
+repositories {
+    mavenCentral()
+    maven("https://maven.pkg.github.com/whya5448/metalscraps-tts")
+}
+
+apply(plugin = "java")
+apply(plugin = "io.spring.dependency-management")
+
+apply(plugin = "org.gradle.java-library")
+apply(plugin = "org.gradle.maven-publish")
+apply(plugin = "org.jetbrains.kotlin.jvm")
+
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+    }
+    generatedPomCustomization {
+        enabled(false)
+    }
+}
+
+val feignVersion = "11.10"
+val slf4jVersion = "2.0.3"
+val log4jVersion = "2.19.0"
+val jacksonModuleKotlinVersion = "2.13.4"
+
+dependencies {
+    // jackson
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonModuleKotlinVersion")
+
+    // feign
+    implementation("io.github.openfeign:feign-core:$feignVersion")
+    implementation("io.github.openfeign:feign-slf4j:$feignVersion")
+    implementation("io.github.openfeign:feign-jackson:$feignVersion")
+    implementation("io.github.openfeign:feign-jaxb:$feignVersion")
+
+    // jaxb
+    implementation("javax.xml.bind:jaxb-api:2.4.0-b180830.0359")
+    implementation("org.glassfish.jaxb:jaxb-runtime:2.4.0-b180830.0438")
+
+    // logging
+    implementation("org.slf4j:slf4j-api:$slf4jVersion")
+    testImplementation("org.apache.logging.log4j:log4j-core:$log4jVersion")
+    testImplementation("org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion")
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        freeCompilerArgs = listOf("-Xjsr305=strict")
+        jvmTarget = "17"
+    }
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
+
+tasks.withType<Jar> {
+    archiveClassifier.set("")
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    withSourcesJar()
+}
+
+publishing {
     repositories {
-        mavenLocal()
-        mavenCentral()
-    }
-}
-
-subprojects {
-    apply {
-        apply(plugin = "java")
-        plugin("org.gradle.java-library")
-        plugin("org.gradle.maven-publish")
-        plugin("org.jetbrains.kotlin.jvm")
-    }
-
-    tasks.withType<KotlinCompile> {
-        kotlinOptions {
-            freeCompilerArgs = listOf("-Xjsr305=strict")
-            jvmTarget = "17"
-        }
-    }
-
-    tasks.withType<Test> {
-        useJUnitPlatform()
-    }
-
-    tasks.withType<Jar> {
-        archiveClassifier.set("")
-    }
-
-    java {
-        sourceCompatibility = JavaVersion.VERSION_17
-        withSourcesJar()
-    }
-
-    tasks {
-/*        val sourcesJar by creating(Jar::class) {
-            archiveClassifier.set("sources")
-            from(sourceSets.main.get().allSource)
-        }
-*/
-/*
-        artifacts {
-            archives(sourcesJar)
-            archives(jar)
-        }
-        */
-    }
-
-    fun getGitHash(): String {
-        val stdout = ByteArrayOutputStream()
-        exec {
-            commandLine("git", "rev-parse", "--short", "HEAD")
-            standardOutput = stdout
-        }
-        return stdout.toString().trim()
-    }
-
-    publishing {
-        repositories {
-            maven {
-                name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/whya5448/metalscraps-tts")
-                credentials {
-                    username = "${project.properties["GITHUB_USERNAME"] ?: System.getenv("GITHUB_USERNAME")}"
-                    password = "${project.properties["GITHUB_TOKEN"] ?: System.getenv("GITHUB_TOKEN")}"
-                }
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/whya5448/metalscraps-tts")
+            credentials {
+                username = "${project.properties["GITHUB_USERNAME"] ?: System.getenv("GITHUB_USERNAME")}"
+                password = "${project.properties["GITHUB_TOKEN"] ?: System.getenv("GITHUB_TOKEN")}"
             }
         }
+    }
 
-        publications {
-            create<MavenPublication>("library") {
-                from(components["java"])
-            }
-
-            create<MavenPublication>("snapshot") {
-                version = getGitHash()
-                from(components["java"])
-            }
+    publications {
+        register<MavenPublication>("library") {
+            from(components["java"])
+        }
+        register<MavenPublication>("snapshot") {
+            version = "$version-SNAPSHOT"
+            from(components["java"])
         }
     }
 }
