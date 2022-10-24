@@ -7,7 +7,7 @@ plugins {
     kotlin("plugin.jpa") version "1.7.20"
 
     id("org.springframework.boot") version "2.7.5"
-    id("io.spring.dependency-management") version "1.0.15.RELEASE"
+    id("io.spring.dependency-management") version "1.1.0"
 }
 
 extra["springCloudVersion"] = "2021.0.4"
