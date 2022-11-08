@@ -2,7 +2,7 @@ plugins {
     `java-library`
     `maven-publish`
 
-    kotlin("jvm") version "1.7.20"
+    kotlin("jvm") version "1.7.21"
     kotlin("plugin.spring") version "1.7.20"
     kotlin("plugin.jpa") version "1.7.20"
 
