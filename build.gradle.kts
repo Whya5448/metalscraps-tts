@@ -39,7 +39,7 @@ dependencyManagement {
 val feignVersion = "11.10"
 val slf4jVersion = "2.0.3"
 val log4jVersion = "2.19.0"
-val jacksonModuleKotlinVersion = "2.13.4"
+val jacksonModuleKotlinVersion = "2.14.0"
 
 dependencies {
     // jackson
